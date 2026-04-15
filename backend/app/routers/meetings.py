@@ -8,6 +8,7 @@ from app.models import MeetingListItem, MeetingDetail, MeetingUploadResponse
 from app.services.transcription import transcribe_audio
 from app.services.analysis import analyze_transcript
 from app.services.storage import upload_audio_to_storage, delete_audio_from_storage
+from app.services.email import send_action_items_email
 
 router = APIRouter()
 
@@ -105,6 +106,21 @@ async def upload_meeting(
             raise Exception("No data returned from insert")
 
         meeting = result.data[0]
+
+        # 6. Send action items email to the user
+        try:
+            user_response = supabase.auth.admin.get_user_by_id(user_id)
+            user_email = user_response.user.email if user_response and user_response.user else None
+            if user_email:
+                send_action_items_email(
+                    to_email=user_email,
+                    meeting_title=title,
+                    summary=analysis.get("summary", ""),
+                    action_items=analysis.get("action_items", []),
+                )
+        except Exception as e:
+            # Never let email failure block the response
+            print(f"[EMAIL] Could not send action items email: {e}")
 
         return MeetingUploadResponse(
             id=meeting["id"],

@@ -6,3 +6,4 @@ supabase
 openai-whisper
 groq
 python-multipart
+resend
