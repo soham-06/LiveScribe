@@ -46,7 +46,7 @@ def analyze_transcript(transcript: str) -> dict:
                 "content": ANALYSIS_PROMPT.format(transcript=transcript),
             },
         ],
-        model="llama3-8b-8192",
+        model="llama-3.3-70b-versatile",
         temperature=0.3,
         max_tokens=2048,
         top_p=1,

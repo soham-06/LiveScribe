@@ -4,6 +4,7 @@ import { getMeetings, deleteMeeting } from '../lib/api';
 import Sidebar from '../components/Sidebar';
 import MeetingCard from '../components/MeetingCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import GoogleCalendar from '../components/GoogleCalendar';
 import { HiOutlineUpload, HiOutlineSearch, HiOutlineMicrophone } from 'react-icons/hi';
 import toast from 'react-hot-toast';
 
@@ -132,6 +133,9 @@ export default function Dashboard() {
             ))}
           </div>
         )}
+
+        {/* Google Calendar */}
+        <GoogleCalendar />
 
         {/* Delete Confirmation Dialog */}
         {deleteId && (
